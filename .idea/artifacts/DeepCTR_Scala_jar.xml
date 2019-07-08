@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="DeepCTR_Scala:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/DeepCTR_Scala_jar</output-path>
+    <root id="archive" name="DeepCTR_Scala.jar">
+      <element id="module-output" name="DeepCTR_Scala" />
+    </root>
+  </artifact>
+</component>

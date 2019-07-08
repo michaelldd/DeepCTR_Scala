@@ -45,10 +45,10 @@ object NlpLda {
     Logger.getLogger("akka").setLevel(Level.ERROR)
     Logger.getRootLogger().setLevel(Level.ERROR)
 
-    val sparkConf= new SparkConf().setAppName("feature engineering of nlpLDA on spark") .set("spark.ui.showConsoleProgress", "false").setMaster("local")
+    val sparkConf= new SparkConf().setAppName("feature engineering of nlpLDA on spark") .set("spark.ui.showConsoleProgress", "false")   //.setMaster("local")
     val sc = new SparkContext(sparkConf)
-    //val pathFile="icmechallenge2019/track2/data/track2_title.txt"
-    val pathFile="D:/douyinData/track2_title.txt"
+    val pathFile="icmechallenge2019/track2/test/track2_title_500.txt"
+    //val pathFile="D:/douyinData/track2_title.txt"
 
     val rawRdd_nlp = sc.textFile(pathFile)
     //{"item_id": 616993, "title_features": {"224": 1, "3363": 1, "1828": 1, "70": 1, "327": 1, "47": 1, "7011": 1, "340": 1, "3191": 1, "4445": 1, "22463": 1}}
@@ -74,12 +74,14 @@ object NlpLda {
     df.show(5,truncate = false)
     df.cache()
 
-    val lda=new LDA().setK(50).setMaxIter(200)
+    val lda=new LDA().setK(2).setMaxIter(5)
     val  ldaModel= lda.fit(df)
-    //lda模型保存
-    ldaModel.write.overwrite().save("D:/douyinData/lda_model_1")
-    //lda模型加载
-    val  ldaModel_load= LocalLDAModel.load("D:/douyinData/lda_model_1")
+    print("lda模型保存")
+    val model_path="icmechallenge2019/track2/lda_model"
+    ldaModel.write.overwrite().save(model_path)//LocalLDAModel
+
+    print("lda模型加载")
+    val  ldaModel_load= LocalLDAModel.load(model_path)
 
     val transformed = ldaModel_load.transform(df)
 
